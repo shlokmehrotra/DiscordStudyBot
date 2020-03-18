@@ -4,7 +4,7 @@ import pandas as pd
 from discord.ext import commands
 
 client = commands.Bot(command_prefix = "!")
-tasks = pd.DataFrame(columns = ["author", "task", "time"])
+tasks = pd.DataFrame(columns = ["author", "task", "time"]) 
 
 @client.event
 async def on_ready():
@@ -18,15 +18,17 @@ async def ping(ctx):
 # add items to schedule
 @client.command()
 async def add(ctx, task, time):
-  tasks.append(pd.Series([ctx.author, task, time], index=tasks.columns))
+  global tasks 
+  tasks = tasks.append(pd.Series([ctx.author, task, time], index=tasks.columns), ignore_index=True) # can we # test this
+  # print(pd.Series([ctx.author, task, time], index=tasks.columns))
+  print(tasks)
   await ctx.send(f"Added {task} successfully!")
-  
 
 # delete items from schedule
-@client.command()
+@client.command() 
 async def delete(ctx, task):
   await ctx.send("Delete" ,  ctx.content, task.content)
-
+  
 # update items
 @client.command()
 async def update(ctx, task, time):
