@@ -20,4 +20,4 @@ async def on_ready():
 
 #dont touch the lines below
 
-client.run("Njg5NjgwOTY2ODMwMzkxMzA0.XnGfew.zTwns19a74uIQYqRKQZ8DHE6Xj0")
+client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
