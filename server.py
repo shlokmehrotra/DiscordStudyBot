@@ -1,51 +1,46 @@
 import discord
-import csv
+import numpy as np
+import pandas as pd
 from discord.ext import commands
 
-client = discord.Client()
-bot = commands.Bot("")
-
-messagebs = []
+client = commands.Bot(command_prefix = "!")
+tasks = pd.DataFrame(columns = ["author", "task", "time"])
 
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
   guilds = client.guilds
+  
+@client.command()
+async def ping(ctx): 
+  await ctx.send(f'Chong from Wuhan! {round(client.latency * 1000)}ms') 
 
+# add items to schedule
+@client.command()
+async def add(ctx, task, time):
+  tasks.append(pd.Series([ctx.author, task, time], index=tasks.columns))
+  await ctx.send(f"Added {task} successfully!")
+  
 
-# assume prefix to be "!"
-a_prefix = "!"
+# delete items from schedule
+@client.command()
+async def delete(ctx, task):
+  await ctx.send("Delete" ,  ctx.content, task.content)
 
-@client.event
-async def on_message(message):
-  '''
-  Example:
-  message = "!add prenk 2h"
-  prefix = "!"
-  mess = ["add", "prenk", "2h"]
-  '''
-  prefix, mess = message.content[0:len(a_prefix)], message.content[len(a_prefix):]
-  mess = " ".join(mess.split()).split(' ') #tf is htis prenk removes whitespace
-  if(prefix == a_prefix): 
-    messagebs.append(mess)
-    print(messagebs)
-    '''
-    if(mess[0] == "add"): #add item
-      messagebs.append(mess)
-    if(mess[0] == "update") #update item
-    if(mess[0] == "show") #show list of items 
-    if(mess[0] == "delete") #delete kukkar
-    if(mess[0] == "complete") #mark completion
-    '''
+# update items
+@client.command()
+async def update(ctx, task, time):
+  await ctx.send("Update")
+  
+# show items specific to user
+@client.command()
+async def show(ctx):
+  await ctx.send("Show")
 
-  #message.content -> to extract the content of the message
-  #message.author -> who wrote the message
-  #await message.channel.send("the message you want to send") -> how to send a message to the channel
-  if(message.content == "prenk"):
-    await message.channel.send("prenk")
-    await message.delete()
+# indicate that item is completed
+@client.command()
+async def complete(ctx, task):
+  await ctx.send("Complete")
 
-
-#dont touch the lines below
-
+#dont touch the below tings
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
