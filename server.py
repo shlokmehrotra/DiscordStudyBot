@@ -1,9 +1,29 @@
+import mysql.connector 
 import discord
 import numpy as np
 import pandas as pd
 from discord.ext import commands
+import time 
+import mysqlx
 
+'''
+mydb = mysql.connector.connect(host='localhost',
+                              user="shlokmehrotra",
+                              password='bruhprenk',
+                              database='toughguy')
+'''
+
+session = mysqlx.get_session({
+    'host': 'localhost',
+    'port': 33060,
+    'user': 'root',
+    'password': 'bruhprenk'
+})
+schema = session.get_schema('toughguy')
+table = schema.get_collections('users')
 client = commands.Bot(command_prefix = "!")
+
+
 tasks = pd.DataFrame(columns = ["author", "task", "time"]) 
 
 @client.event
@@ -13,22 +33,46 @@ async def on_ready():
   
 @client.command()
 async def ping(ctx): 
-  await ctx.send(f'Chong from Wuhan! {round(client.latency * 1000)}ms') 
+  await ctx.send(f'pong! {round(client.latency * 1000)}ms') 
 
+# time format DD:HH:MM
 # add items to schedule
+# time_fromnow takes up DD:HH:MM format
+def time_waste(time_from_now):
+  date, year = time.ctime().split(' ')[-2:-1]
+
+  print(curr_time)
+  '''
+  days, hours, minutes = time_from_now.split(':')
+  time_left = minutes + hours * 60 + days * 60 * 24
+  return time_left
+  print(days, hours, minutes)
+  '''
+  
 @client.command()
 async def add(ctx, task, time):
   global tasks 
-  tasks = tasks.append(pd.Series([ctx.author, task, time], index=tasks.columns), ignore_index=True) # can we # test this
-  # print(pd.Series([ctx.author, task, time], index=tasks.columns))
-  print(tasks)
-  await ctx.send(f"Added {task} successfully!")
-
+  # check for duplicate tasks
+  if task.lower() not in list(tasks['task']):
+    tasks = tasks.append(pd.Series([ctx.author, task.lower(), time], index=tasks.columns), ignore_index=True)
+    print(tasks)
+    await ctx.send(f"Added {task} successfully! :rotating_light:")
+  else:
+    await ctx.send(f"{task} already exists. Did you want to update it? :eggplant:")
+  
 # delete items from schedule
 @client.command() 
 async def delete(ctx, task):
-  await ctx.send("Delete" ,  ctx.content, task.content)
-  
+  global tasks
+  if task.lower() in list(tasks['task']):
+    tasks = tasks.set_index("task")
+    tasks = tasks.drop(task)
+    tasks = tasks.reset_index()
+    await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
+  else:
+    await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
+  print(tas)
+
 # update items
 @client.command()
 async def update(ctx, task, time):
@@ -43,6 +87,8 @@ async def show(ctx):
 @client.command()
 async def complete(ctx, task):
   await ctx.send("Complete")
+
+
 
 #dont touch the below tings
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
