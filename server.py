@@ -20,7 +20,10 @@ session = mysqlx.get_session({
     'password': 'bruhprenk'
 })
 schema = session.get_schema('toughguy')
-table = schema.get_collections('users')
+collection = schema.get_collection('users')
+#results = collection.find("select * from users").fetch_all()
+#print(results)
+print(collection.count())
 client = commands.Bot(command_prefix = "!")
 
 
