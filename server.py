@@ -6,24 +6,32 @@ from discord.ext import commands
 import time 
 import mysqlx
 
-'''
-mydb = mysql.connector.connect(host='localhost',
-                              user="shlokmehrotra",
-                              password='bruhprenk',
-                              database='toughguy')
-'''
 
+mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
+
+mycursor = mydb.cursor()
+
+mycursor.execute("INSERT INTO userlog VALUES ",
+                "( 'value1', 'value2', 'value3')")
+mycursor.execute("select * from userlog")
+for prenk in mycursor:
+  print(prenk)
+'''
 session = mysqlx.get_session({
     'host': 'localhost',
     'port': 33060,
     'user': 'root',
     'password': 'bruhprenk'
 })
+
+
 schema = session.get_schema('toughguy')
-collection = schema.get_collection('users')
-#results = collection.find("select * from users").fetch_all()
+collection = schema.get_collection('userlog')
+#results = collection.select("*")
 #print(results)
-print(collection.count())
+print(schema.get_table("userlog"))
+#print(mysqlx.View(schema, users)) 
+'''
 client = commands.Bot(command_prefix = "!")
 
 
@@ -51,10 +59,16 @@ def time_waste(time_from_now):
   return time_left
   print(days, hours, minutes)
   '''
-  
 @client.command()
 async def add(ctx, task, time):
   global tasks 
+  print(ctx.author.id) #author id
+  print(task, time)
+  #session.start_transaction()
+
+  #session.commit()
+  #prenk
+  '''
   # check for duplicate tasks
   if task.lower() not in list(tasks['task']):
     tasks = tasks.append(pd.Series([ctx.author, task.lower(), time], index=tasks.columns), ignore_index=True)
@@ -62,7 +76,7 @@ async def add(ctx, task, time):
     await ctx.send(f"Added {task} successfully! :rotating_light:")
   else:
     await ctx.send(f"{task} already exists. Did you want to update it? :eggplant:")
-  
+  '''
 # delete items from schedule
 @client.command() 
 async def delete(ctx, task):
