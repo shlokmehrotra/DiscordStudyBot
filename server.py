@@ -10,28 +10,15 @@ import mysqlx
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
 
 mycursor = mydb.cursor()
-
+'''
+#for adding things to the database.
 mycursor.execute("INSERT INTO userlog VALUES ",
                 "( 'value1', 'value2', 'value3')")
+'''
 mycursor.execute("select * from userlog")
 for prenk in mycursor:
   print(prenk)
-'''
-session = mysqlx.get_session({
-    'host': 'localhost',
-    'port': 33060,
-    'user': 'root',
-    'password': 'bruhprenk'
-})
 
-
-schema = session.get_schema('toughguy')
-collection = schema.get_collection('userlog')
-#results = collection.select("*")
-#print(results)
-print(schema.get_table("userlog"))
-#print(mysqlx.View(schema, users)) 
-'''
 client = commands.Bot(command_prefix = "!")
 
 
@@ -61,9 +48,16 @@ def time_waste(time_from_now):
   '''
 @client.command()
 async def add(ctx, task, time):
-  global tasks 
+  #global tasks 
   print(ctx.author.id) #author id
   print(task, time)
+  #adding item to database
+  comm = (
+  "INSERT INTO userlog (user, item, endtime) VALUES (%s, %s, %s)"
+  )
+  data = (str(ctx.author.id), str(task), str(time))
+  mycursor.execute(comm, data)
+
   #session.start_transaction()
 
   #session.commit()
