@@ -3,8 +3,9 @@ import discord
 import numpy as np
 import pandas as pd
 from discord.ext import commands
+from datetime import datetime, timedelta
 import time 
-import mysqlx
+#import mysqlx
 
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
@@ -36,10 +37,14 @@ async def ping(ctx):
 # time format DD:HH:MM
 # add items to schedule
 # time_fromnow takes up DD:HH:MM format
-def time_waste(time_from_now):
-  date, year = time.ctime().split(' ')[-2:-1]
-
-  print(curr_time)
+def time_process(time_from_now):
+  time_from_now = time_from_now.split(':')
+  days = 0
+  if(len(time_from_now) == 2):
+    hours, minutes =  time_from_now[0], time_from_now[1]
+  if(len(time_from_now) == 3):
+    days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
+  return(datetime.now() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
   '''
   days, hours, minutes = time_from_now.split(':')
   time_left = minutes + hours * 60 + days * 60 * 24
@@ -51,13 +56,20 @@ async def add(ctx, task, time):
   #global tasks 
   print(ctx.author.id) #author id
   print(task, time)
+
+
+  #process the time to calculate end date
+  time = time_process(time)
   #adding item to database
   comm = (
   "INSERT INTO userlog (user, item, endtime) VALUES (%s, %s, %s)"
   )
   data = (str(ctx.author.id), str(task), str(time))
   mycursor.execute(comm, data)
+  mycursor.execute("SELECT * FROM userlog")
+  rows = mycursor.fetchall()
 
+  print(rows)
   #session.start_transaction()
 
   #session.commit()
@@ -74,15 +86,15 @@ async def add(ctx, task, time):
 # delete items from schedule
 @client.command() 
 async def delete(ctx, task):
-  global tasks
-  if task.lower() in list(tasks['task']):
-    tasks = tasks.set_index("task")
-    tasks = tasks.drop(task)
-    tasks = tasks.reset_index()
-    await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
-  else:
-    await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
-  print(tas)
+  #global tasks
+  #if task.lower() in list(tasks['task']):
+  # tasks = tasks.set_index("task")
+  # tasks = tasks.drop(task)
+  #  tasks = tasks.reset_index()
+  #  await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
+  #else:
+  # await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
+  await ctx.send("Delete")
 
 # update items
 @client.command()
