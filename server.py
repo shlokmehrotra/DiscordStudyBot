@@ -102,7 +102,8 @@ async def delete(ctx, task):
 
 # update items
 @client.command()
-async def update(ctx, task, time):
+async def update(ctx, task, new_time):
+  
   await ctx.send("Update")
   
 # show items specific to user
@@ -116,7 +117,9 @@ async def show(ctx):
   mycursor.execute(comm % (data))
   rows = mycursor.fetchall()
   print(rows)
-  await ctx.send("Show")
+  for row in rows:
+    await ctx.send(str(row))
+  #await ctx.send("Show")
 
 # indicate that item is completed
 @client.command()
