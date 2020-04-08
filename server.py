@@ -54,6 +54,7 @@ def time_process(time_from_now):
 @client.command()
 async def add(ctx, task, time):
   #global tasks 
+
   print(ctx.author.id) #author id
   print(task, time)
 
@@ -68,8 +69,8 @@ async def add(ctx, task, time):
   mycursor.execute(comm, data)
   mycursor.execute("SELECT * FROM userlog")
   rows = mycursor.fetchall()
-
   print(rows)
+
   #session.start_transaction()
 
   #session.commit()
@@ -86,6 +87,9 @@ async def add(ctx, task, time):
 # delete items from schedule
 @client.command() 
 async def delete(ctx, task):
+  comm = (
+  ""
+  )
   #global tasks
   #if task.lower() in list(tasks['task']):
   # tasks = tasks.set_index("task")
@@ -104,6 +108,14 @@ async def update(ctx, task, time):
 # show items specific to user
 @client.command()
 async def show(ctx):
+  comm = (
+  "SELECT * FROM userlog WHERE user = %d"
+  )
+  data = (ctx.author.id)
+  print(ctx.author.id)
+  mycursor.execute(comm % (data))
+  rows = mycursor.fetchall()
+  print(rows)
   await ctx.send("Show")
 
 # indicate that item is completed
