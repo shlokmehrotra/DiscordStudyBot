@@ -87,9 +87,12 @@ async def add(ctx, task, time):
 # delete items from schedule
 @client.command() 
 async def delete(ctx, task):
+  data = (str(ctx.author.id), str(task))
   comm = (
-  ""
+  "DELETE FROM userlog WHERE user = %s  AND item = %s" 
   )
+  
+  mycursor.execute(comm, data)
   #global tasks
   #if task.lower() in list(tasks['task']):
   # tasks = tasks.set_index("task")
@@ -98,7 +101,7 @@ async def delete(ctx, task):
   #  await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
   #else:
   # await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
-  await ctx.send("Delete")
+  await ctx.send("Deleted task: %s" % task)
 
 # update items
 @client.command()
@@ -117,14 +120,31 @@ async def show(ctx):
   mycursor.execute(comm % (data))
   rows = mycursor.fetchall()
   print(rows)
-  for row in rows:
-    await ctx.send(str(row))
+  if(len(rows) == 0):
+    await ctx.send("Currently, you have no items. Please add items to view your current itemlist")
+  else:
+    for row in rows:  
+      await ctx.send(str(row))
   #await ctx.send("Show")
 
 # indicate that item is completed
 @client.command()
 async def complete(ctx, task):
-  await ctx.send("Complete")
+  data = (str(ctx.author.id), str(task))
+  comm = (
+  "DELETE FROM userlog WHERE user = %s  AND item = %s" 
+  )
+  
+  mycursor.execute(comm, data)
+  #global tasks
+  #if task.lower() in list(tasks['task']):
+  # tasks = tasks.set_index("task")
+  # tasks = tasks.drop(task)
+  #  tasks = tasks.reset_index()
+  #  await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
+  #else:
+  # await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
+  await ctx.send("Congrats you completed: %s successfully" % task)
 
 
 
