@@ -10,12 +10,9 @@ import time
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
 
+mydb.autocommit = True
 mycursor = mydb.cursor()
-'''
-#for adding things to the database.
-mycursor.execute("INSERT INTO userlog VALUES ",
-                "( 'value1', 'value2', 'value3')")
-'''
+
 mycursor.execute("select * from userlog")
 for prenk in mycursor:
   print(prenk)
@@ -37,6 +34,7 @@ async def ping(ctx):
 # time format DD:HH:MM
 # add items to schedule
 # time_fromnow takes up DD:HH:MM format
+
 def time_process(time_from_now):
   time_from_now = time_from_now.split(':')
   days = 0
@@ -45,12 +43,7 @@ def time_process(time_from_now):
   if(len(time_from_now) == 3):
     days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
   return(datetime.now() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
-  '''
-  days, hours, minutes = time_from_now.split(':')
-  time_left = minutes + hours * 60 + days * 60 * 24
-  return time_left
-  print(days, hours, minutes)
-  '''
+
 @client.command()
 async def add(ctx, task, time):
   #global tasks 
@@ -71,19 +64,6 @@ async def add(ctx, task, time):
   rows = mycursor.fetchall()
   print(rows)
 
-  #session.start_transaction()
-
-  #session.commit()
-  #prenk
-  '''
-  # check for duplicate tasks
-  if task.lower() not in list(tasks['task']):
-    tasks = tasks.append(pd.Series([ctx.author, task.lower(), time], index=tasks.columns), ignore_index=True)
-    print(tasks)
-    await ctx.send(f"Added {task} successfully! :rotating_light:")
-  else:
-    await ctx.send(f"{task} already exists. Did you want to update it? :eggplant:")
-  '''
 # delete items from schedule
 @client.command() 
 async def delete(ctx, task):
@@ -91,24 +71,22 @@ async def delete(ctx, task):
   comm = (
   "DELETE FROM userlog WHERE user = %s  AND item = %s" 
   )
-  
+
   mycursor.execute(comm, data)
-  #global tasks
-  #if task.lower() in list(tasks['task']):
-  # tasks = tasks.set_index("task")
-  # tasks = tasks.drop(task)
-  #  tasks = tasks.reset_index()
-  #  await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
-  #else:
-  # await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
+
   await ctx.send("Deleted task: %s" % task)
 
 # update items
 @client.command()
 async def update(ctx, task, new_time):
-  
-  await ctx.send("Update")
-  
+  comm = ("UPDATE userlog SET endtime = %s WHERE (item = %s AND user = %s)")
+  new_time = time_process(new_time)
+  try:
+    data = (new_time, task, ctx.author.id)
+    mycursor.execute(comm, data)
+    await ctx.send("You have updated you task: " + str(task))
+  except:
+    await ctx.send("You do not have a task by that name. Please try again!")  
 # show items specific to user
 @client.command()
 async def show(ctx):
@@ -136,14 +114,6 @@ async def complete(ctx, task):
   )
   
   mycursor.execute(comm, data)
-  #global tasks
-  #if task.lower() in list(tasks['task']):
-  # tasks = tasks.set_index("task")
-  # tasks = tasks.drop(task)
-  #  tasks = tasks.reset_index()
-  #  await ctx.send(f"Deleted {task} successfully! :octopus:" ,  ctx.content, task.content)
-  #else:
-  # await ctx.send(f"{task} not found. Would you like to create it? :popcorn:" , ctx.content, task.content)
   await ctx.send("Congrats you completed: %s successfully" % task)
 
 
