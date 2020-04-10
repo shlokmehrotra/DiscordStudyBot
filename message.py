@@ -6,6 +6,7 @@ from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 import time 
 from dateutil.relativedelta import relativedelta
+import schedule
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
 
@@ -14,29 +15,33 @@ mycursor = mydb.cursor()
 
 
 def time_process(time_curr, time_lat):
-	#time_curr = datetime.now()
-	#time_lat = time_curr + timedelta(days = 1, hours = 1, minutes = 3)
+
 	time_curr = time_curr.split('.')[0]
 	time_curr = datetime.strptime(time_curr, '%Y-%m-%d %H:%M:%S')
 	t_diff = time_lat - time_curr
-	#return t_diff
-	#print(time_curr, " future: ", time_lat)
+
+	#in minutes
+	time_intervals = [1, 5, 10, 30, 60, 180, 300, 1440, 2880, 4320, 10080]
 	print(t_diff)
-	#print(t_diff.days)
-	#print(t_diff.seconds)
 	if(t_diff.days < 0):
 		seconds = -1 * (t_diff.seconds - t_diff.days * 86400)
 		print(seconds)
-		
+		for value in time_intervals:
+			if(int(seconds/60) == value):
+				#time that needs to be sent :)
+				return value
+		#time has not come up
+		return 0
+	else:
+		#the item should be deleted
+		return -1
 
-i = 0
-while(i < 3):
-		
+
+def iterate()
 	mycursor.execute("SELECT * FROM userlog")
 	rows = mycursor.fetchall()
 	for row in rows:
  		print(row[0] ,"this ", row[1],"this", row[2])
  		time_process(row[2], datetime.utcnow())
-	time.sleep(60)
-	i+=1
-time_process(1, 1)
+
+schedule.every(1).minutes.do(iterate)
