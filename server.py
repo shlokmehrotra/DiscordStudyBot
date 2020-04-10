@@ -1,10 +1,8 @@
-import mysql.connector 
+import mysql.connector
 import discord
-import numpy as np
-import pandas as pd
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-import time 
+import time
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
 
@@ -17,22 +15,20 @@ for prenk in mycursor:
 
 client = commands.Bot(command_prefix = "!")
 
-
-tasks = pd.DataFrame(columns = ["author", "task", "time"]) 
-
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
   guilds = client.guilds
-  
+
 @client.command()
-async def ping(ctx): 
-  await ctx.send(f'pong! {round(client.latency * 1000)}ms') 
+async def ping(ctx):
+  await ctx.send(f'pong! {round(client.latency * 1000)}ms')
 
 # time format DD:HH:MM
 # add items to schedule
 # time_fromnow takes up DD:HH:MM format
 
+# determine end time
 def time_process(time_from_now):
   time_from_now = time_from_now.split(':')
   days = 0
@@ -42,13 +38,11 @@ def time_process(time_from_now):
     days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
   return(datetime.utcnow() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
 
+# add items to schedule
 @client.command()
 async def add(ctx, task, time):
-  #global tasks 
-
-  print(ctx.author.id) #author id
+  print(ctx.author.id)
   print(task, time)
-
 
   #process the time to calculate end date
   time = time_process(time)
@@ -63,16 +57,15 @@ async def add(ctx, task, time):
   print(rows)
 
 # delete items from schedule
-@client.command() 
+@client.command()
 async def delete(ctx, task):
   data = (str(ctx.author.id), str(task))
   comm = (
-  "DELETE FROM userlog WHERE user = %s  AND item = %s" 
+  "DELETE FROM userlog WHERE user = %s  AND item = %s"
   )
 
   mycursor.execute(comm, data)
-
-  await ctx.send("Deleted task: %s" % task)
+  await ctx.send(f"Deleted task: {task}")
 
 # update items
 @client.command()
@@ -95,6 +88,7 @@ async def update(ctx, task, new_time):
     data = (new_time, task, ctx.author.id)
     mycursor.execute(comm, data)
     await ctx.send("You have updated you task: " + str(task))
+
 # show items specific to user
 @client.command()
 async def show(ctx):
@@ -109,18 +103,16 @@ async def show(ctx):
   if(len(rows) == 0):
     await ctx.send("Currently, you have no items. Please add items to view your current itemlist")
   else:
-    for row in rows:  
-      await ctx.send(str(row))
-  #await ctx.send("Show")
+    await ctx.send("\n".join[str(row) for row in rows]])
 
 # indicate that item is completed
 @client.command()
 async def complete(ctx, task):
   data = (str(ctx.author.id), str(task))
   comm = (
-  "DELETE FROM userlog WHERE user = %s  AND item = %s" 
+  "DELETE FROM userlog WHERE user = %s  AND item = %s"
   )
-  
+
   mycursor.execute(comm, data)
   await ctx.send("Congrats you completed: %s successfully" % task)
 
