@@ -5,8 +5,6 @@ import pandas as pd
 from discord.ext import commands
 from datetime import datetime, timedelta
 import time 
-#import mysqlx
-
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
 
@@ -125,7 +123,6 @@ async def complete(ctx, task):
   
   mycursor.execute(comm, data)
   await ctx.send("Congrats you completed: %s successfully" % task)
-
 
 
 #dont touch the below tings
