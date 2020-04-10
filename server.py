@@ -79,14 +79,24 @@ async def delete(ctx, task):
 # update items
 @client.command()
 async def update(ctx, task, new_time):
-  comm = ("UPDATE userlog SET endtime = %s WHERE (item = %s AND user = %s)")
-  new_time = time_process(new_time)
-  try:
+  comm = ("SELECT * FROM userlog WHERE user = %d")
+  data = (ctx.author.id)
+  mycursor.execute(comm  % data)
+  rows = mycursor.fetchall()
+  print("user vals: ")
+  condition = True
+  for row in rows:
+    if(row[1] == str(task)):
+      condition = False
+    print(row[1])
+  if(condition):
+    await ctx.send("You do not have a task by that name. Please try again!")
+  else:
+    comm = ("UPDATE userlog SET endtime = %s WHERE (item = %s AND user = %s)")
+    new_time = time_process(new_time)
     data = (new_time, task, ctx.author.id)
     mycursor.execute(comm, data)
     await ctx.send("You have updated you task: " + str(task))
-  except:
-    await ctx.send("You do not have a task by that name. Please try again!")  
 # show items specific to user
 @client.command()
 async def show(ctx):
