@@ -103,7 +103,7 @@ async def show(ctx):
   if(len(rows) == 0):
     await ctx.send("Currently, you have no items. Please add items to view your current itemlist")
   else:
-    await ctx.send("\n".join[str(row) for row in rows]])
+    await ctx.send("\n".join([str(row) for row in rows]))
 
 # indicate that item is completed
 @client.command()
