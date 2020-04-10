@@ -30,7 +30,7 @@ def time_process(time_curr, time_lat):
 		seconds -= 216000 * days
 		hours = int(seconds / 3600)
 		seconds -= hours * 3600
-		minutes = seconds / 60
+		minutes = int(seconds / 60)
 		seconds -= minutes * 60
 		print(seconds, minutes, hours, days)
 

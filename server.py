@@ -3,7 +3,7 @@ import discord
 import numpy as np
 import pandas as pd
 from discord.ext import commands
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import time 
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
@@ -40,7 +40,7 @@ def time_process(time_from_now):
     hours, minutes =  time_from_now[0], time_from_now[1]
   if(len(time_from_now) == 3):
     days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
-  return(datetime.now() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
+  return(datetime.now(timezone.utc) + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
 
 @client.command()
 async def add(ctx, task, time):
