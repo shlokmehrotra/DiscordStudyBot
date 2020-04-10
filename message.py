@@ -25,14 +25,9 @@ def time_process(time_curr, time_lat):
 	#print(t_diff.days)
 	#print(t_diff.seconds)
 	if(t_diff.days < 0):
-		seconds =  -(t_diff.days * 216000 + t_diff.seconds)
-		days = int(seconds / 216000)
-		seconds -= 216000 * days
-		hours = int(seconds / 3600)
-		seconds -= hours * 3600
-		minutes = int(seconds / 60)
-		seconds -= minutes * 60
-		print(seconds, minutes, hours, days)
+		seconds = -1 * (t_diff.seconds - t_diff.days * 86400)
+		print(seconds)
+		
 
 i = 0
 while(i < 3):
@@ -41,7 +36,7 @@ while(i < 3):
 	rows = mycursor.fetchall()
 	for row in rows:
  		print(row[0] ,"this ", row[1],"this", row[2])
- 		time_process(row[2], datetime.now(timezone.utc))
+ 		time_process(row[2], datetime.utcnow())
 	time.sleep(60)
 	i+=1
 time_process(1, 1)
