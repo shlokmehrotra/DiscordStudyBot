@@ -32,16 +32,27 @@ def time_process(time_curr, time_lat):
 				return value
 		#time has not come up
 		return 0
-	else:
-		#the item should be deleted
-		return -1
+	#the item should be deleted ting
+	return -1
 
 
 def iterate()
 	mycursor.execute("SELECT * FROM userlog")
 	rows = mycursor.fetchall()
 	for row in rows:
+		#row[0] = user id
+		#row[1] = task
+		#row[2] = time
  		print(row[0] ,"this ", row[1],"this", row[2])
- 		time_process(row[2], datetime.utcnow())
-
+ 		action = time_process(row[2], datetime.utcnow())
+ 		if(action == 0):
+ 			pass
+ 		elif(action == -1):
+ 			data = (str(row[0]), str(row[1]))
+  			comm = (
+  			"DELETE FROM userlog WHERE user = %s  AND item = %s"
+  			)
+  			mycursor.execute(comm, data)
+ 		else:
+ 			#PM the USER with the deadline update
 schedule.every(1).minutes.do(iterate)
