@@ -166,7 +166,6 @@ async def show(ctx):
         embed.add_field(name=f"{row[0]}", value=f"{row[1]}", inline=False)
 
     embed.set_footer(text="Study Bot®")
-    embed.set_timestamp()
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
