@@ -224,8 +224,7 @@ async def show(ctx):
     embed.set_author(name="Study Bot", icon_url="https://i.imgur.com/rdm3W9t.png")
 
     for row in rows:
-        embed.add_field(name=f"{row[1]}", value="rihjt", inline=True)
-        embed.add_field(name=f"{row[0]}", value="rihjt", inline=True)
+        embed.add_field(name=f"`{row[0]}`", value=f"{row[1]}", inline=False)
 
     # embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
     embed.set_footer(text="Study Bot®", icon_url="https://i.imgur.com/rdm3W9t.png")
