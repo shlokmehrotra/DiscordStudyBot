@@ -162,11 +162,12 @@ async def show(ctx):
         description = ":notepad_spiral:",
         colour = discord.Colour.blue()
     )
-    embed.set_footer(":pray_tone4: sweppu.")
-    embed.set_author("Study Bot")
+    embed.set_footer(text=":pray_tone4: sweppu.")
+    embed.set_author(name="Study Bot")
     for row in rows:
         embed.add_field(name=f"{row[0]}", value=f"{row[1]}", inline=False)
-    await client.say(embed)
+
+    await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
 
