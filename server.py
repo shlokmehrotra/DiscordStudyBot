@@ -147,7 +147,7 @@ async def show(ctx):
   data = (ctx.author.id)
   print(ctx.author.id)
   mycursor.execute(comm % (data))
-  userMention = ctx.mention
+  userMention = ctx.author.mention
   rows = [row[1:] for row in mycursor.fetchall()]
   print(rows)
   if(len(rows) == 0):
