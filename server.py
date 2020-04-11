@@ -4,7 +4,6 @@ from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 from dateutil.relativedelta import relativedelta
 import time
-import schedule
 import asyncio
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
@@ -195,8 +194,9 @@ async def show(ctx):
   rows = mycursor.fetchall()
   #rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
   print("Rows: ", rows)
-  #for row in rows:
-  #  row = timeDifferential(datetime.utcnow(), row[1])
+  for row in rows:
+    row = (row[0], row[1], timeDifferential(datetime.utcnow(), row[2]))
+  print("New Rows: ", rows)
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
   else:
@@ -239,7 +239,5 @@ async def complete(ctx, *, task):
 
 #dont touch the below tings
 
-#prenk()
 
-#schedule.every(0.1).minutes.do(iterate)
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
