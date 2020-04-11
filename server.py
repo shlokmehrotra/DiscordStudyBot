@@ -150,7 +150,7 @@ async def delete(ctx, *, task):
 @client.command()
 async def update(ctx, *, arg):
   task = " ".join(arg.split()[:-1])
-  time = arg.split()[-1]
+  new_time = arg.split()[-1]
   comm = ("SELECT * FROM userlog WHERE user = %d")
   data = (ctx.author.id)
   mycursor.execute(comm  % data)
