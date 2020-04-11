@@ -130,7 +130,7 @@ async def add(ctx, *, arg):
 
 # delete items from schedule
 @client.command()
-async def delete(ctx, task):
+async def delete(ctx, *, task):
   data = (str(ctx.author.id), str(task))
   comm = (
     "SELECT * FROM userlog where user = %s AND item = %s"
@@ -148,7 +148,9 @@ async def delete(ctx, task):
 
 # update items
 @client.command()
-async def update(ctx, task, new_time):
+async def update(ctx, *, arg):
+  task = " ".join(arg.split()[:-1])
+  time = arg.split()[-1]
   comm = ("SELECT * FROM userlog WHERE user = %d")
   data = (ctx.author.id)
   mycursor.execute(comm  % data)
@@ -203,7 +205,7 @@ async def show(ctx):
 
 # indicate that item is completed
 @client.command()
-async def complete(ctx, task):
+async def complete(ctx, *, task):
   data = (str(ctx.author.id), str(task))
   comm = (
     "SELECT * FROM userlog where user = %s AND item = %s"
@@ -218,7 +220,7 @@ async def complete(ctx, task):
     )
 
     mycursor.execute(comm, data)
-    await ctx.send(f"Congrats you completed **{task}** successfully")
+    await ctx.send(f"Congrats you completed **{task}** successfully :partying_face:")
 
 
 #dont touch the below tings
