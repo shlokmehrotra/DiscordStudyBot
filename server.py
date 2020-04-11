@@ -102,6 +102,27 @@ def time_process(time_from_now):
     days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
   return(datetime.utcnow() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
 
+@client.command()
+async def help(ctx):
+    embed = discord.Embed(
+        title = "Help",
+        description = "List of available commands.",
+        timestamp = datetime.utcnow(),
+        colour = discord.Colour.blue()
+    )
+
+    embed.set_author(name="Study Bot", icon_url="https://i.imgur.com/rdm3W9t.png")
+
+    embed.add_field(name=f"adds a task to your schedule", value=f"`$add <task name> <time>`", inline=False)
+    embed.add_field(name=f"deletes task from your schedule", value=f"`$delete <task name>`", inline=False)
+    embed.add_field(name=f"updatese existing task", value=f"`$update <task name> <time>`", inline=False)
+    embed.add_field(name=f"marks task as complete", value=f"$`complete <task name>`", inline=False)
+    embed.add_field(name=f"view current tasks", value=f"`$show`", inline=False)
+
+    embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
+    embed.set_footer(text="Study Bot®", icon_url="https://i.imgur.com/rdm3W9t.png")
+    await ctx.send(embed=embed)
+
 # add items to schedule
 @client.command()
 async def add(ctx, *, arg):
