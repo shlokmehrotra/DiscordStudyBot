@@ -60,8 +60,10 @@ def iterate():
       mycursor.execute(comm, data)
       print("DELETED item")
     else:
-      # PM the USER with the deadline update
-      client.get_user(str(row[0])).send("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
+      #PM the USER with the deadline update
+      user = client.get_user(int(row[0]))
+      user.send("hi cutie")
+      #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
     # print("script ran but nothing happened. what the shit yo. action = " + str(action))
 @client.event
@@ -168,11 +170,12 @@ async def complete(ctx, task):
   await ctx.send("Congrats you completed: %s successfully" % task)
 
 
-# dont touch the below tings
-# touched it prenk
+#dont touch the below tings
+async def prenk():
+  while(True):
+    iterate()
+    asyncio.sleep(20)
+prenk()
 
-while(True):
-  iterate()
-  time.sleep(20)
 #schedule.every(0.1).minutes.do(iterate)
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")

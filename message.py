@@ -12,7 +12,7 @@ mydb.autocommit = True
 mycursor = mydb.cursor()
 
 client = commands.Bot(command_prefix = "!")
-
+'''
 def time_process(time_curr, time_lat):
 
 	time_curr = time_curr.split('.')[0]
@@ -35,7 +35,7 @@ def time_process(time_curr, time_lat):
 	return -1
 
 
-def iterate()
+def iterate():
 	mycursor.execute("SELECT * FROM userlog")
 	rows = mycursor.fetchall()
 	for row in rows:
@@ -48,14 +48,16 @@ def iterate()
  			pass
  		elif(action == -1):
  			data = (str(row[0]), str(row[1]))
-  			comm = (
+ 			comm = (
   			"DELETE FROM userlog WHERE user = %s  AND item = %s"
   			)
   			mycursor.execute(comm, data)
- 		else:
+  		else:
  			#PM the USER with the deadline update
  			client.get_user(str(row[0])).send("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
-schedule.every(1).minutes.do(iterate)
-
+#schedule.every(1).minutes.do(iterate)
+'''
+user = client.get_user(430610739389267968)
+user.send("hi")
 
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
