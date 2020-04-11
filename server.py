@@ -66,11 +66,13 @@ def iterate():
       #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
     # print("script ran but nothing happened. what the shit yo. action = " + str(action))
+
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
   guilds = client.guilds
 
+# ping thing
 @client.command()
 async def ping(ctx):
   await ctx.send(f'pong! {round(client.latency * 1000)}ms')
@@ -155,8 +157,18 @@ async def show(ctx):
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
   else:
-    await ctx.send(userMention)
-    await ctx.send("\n".join([str(row) for row in rows]))
+    embed = discord.Embed(
+        title = f"{userMention}: Here are your tasks!",
+        description = ":notepad_spiral:",
+        colour = discord.Colour.blue()
+    )
+    embed.set_footer(":pray_tone4: sweppu.")
+    embed.set_author("Study Bot")
+    for row in rows:
+        embed.add_field(name=f"{row[0]}", value=f"{row[1]}", inline=False)
+    await client.say(embed)
+    # await ctx.send(userMention)
+    # await ctx.send("\n".join([str(row) for row in rows]))
 
 # indicate that item is completed
 @client.command()
