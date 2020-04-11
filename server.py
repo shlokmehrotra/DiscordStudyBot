@@ -69,10 +69,10 @@ async def iterate():
     else:
       #PM the USER with the deadline update
       user = client.get_user(int(row[0]))
-      await user.send("Hi, Please keep in mind you have **" + str(action) + " minutes** to complete your task: **" + row[1] + "**")
+      await user.send(f"Hi, Please keep in mind you have **{str(action)} minutes** to complete your task: **{row[1]}**.")
       #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
-    
+
     # print("script ran but nothing happened. what the shit yo. action = " + str(action))
 
 @client.event
@@ -85,7 +85,7 @@ async def on_ready():
 # ping thing
 @client.command()
 async def ping(ctx):
-  await ctx.send(f'pong! {round(client.latency * 1000)}ms')
+  await ctx.send(f'pong! **{round(client.latency * 1000)}ms**.')
 
 # time format DD:HH:MM
 # add items to schedule
@@ -122,7 +122,7 @@ async def add(ctx, task, time):
     mycursor.execute("SELECT * FROM userlog")
     rows = mycursor.fetchall()
     print(rows)
-    await ctx.send("You have added the task: **" + str(task) + "** successfully!")
+    await ctx.send(f"You have added **{str(task)}** successfully!")
   else:
     await ctx.send("You already have a task by that name pending. If you would like to override this task please update it using the update command.")
 
@@ -135,7 +135,7 @@ async def delete(ctx, task):
   )
 
   mycursor.execute(comm, data)
-  await ctx.send(f"Deleted task: {task}")
+  await ctx.send(f"Deleted task: **{task}**.")
 
 # update items
 @client.command()
@@ -157,7 +157,7 @@ async def update(ctx, task, new_time):
     new_time = time_process(new_time)
     data = (new_time, task, ctx.author.id)
     mycursor.execute(comm, data)
-    await ctx.send("You have updated you task: " + str(task))
+    await ctx.send(f"You have updated you task: **{str(task)}**")
 
 # show items specific to user
 @client.command()
@@ -169,7 +169,7 @@ async def show(ctx):
   print(ctx.author.id)
   mycursor.execute(comm % (data))
   userMention = ctx.author.mention
-  rows = [row[1:] for row in mycursor.fetchall()]
+  rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(x, '%Y-%m-%d %H:%M:%S'))
   print(rows)
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
@@ -184,7 +184,7 @@ async def show(ctx):
     embed.set_author(name="Swapnil", icon_url="https://i.imgur.com/rdm3W9t.png")
 
     for row in rows:
-        embed.add_field(name=f"**{row[0]}**", value=f"{row[1]}", inline=False)
+        embed.add_field(name=f"{row[1]}", value=f"**{row[0]}**", inline=False)
 
     # embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
     embed.set_footer(text="Study Bot®")
