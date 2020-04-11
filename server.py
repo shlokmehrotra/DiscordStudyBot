@@ -160,7 +160,7 @@ async def show(ctx):
     await ctx.send(userMention)
     embed = discord.Embed(
         title = "Here are your tasks. :notepad_spiral:",
-        timestamp = datetime.datetime.now();
+        timestamp = datetime.utcnow(),
         colour = discord.Colour.blue()
     )
 
