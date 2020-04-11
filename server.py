@@ -18,12 +18,12 @@ for prenk in mycursor:
 
 async def prenk():
   while(True):
-    iterate()
-    asyncio.sleep(20)
+    await iterate()
+    await asyncio.sleep(45)
 
 client = commands.Bot(command_prefix = "!")
 
-def time_process1(time_curr, time_lat):
+async def time_process1(time_curr, time_lat):
 
   time_curr = time_curr.split('.')[0]
   time_curr = datetime.strptime(time_curr, '%Y-%m-%d %H:%M:%S')
@@ -45,7 +45,8 @@ def time_process1(time_curr, time_lat):
   return -1
 
 # look for the prenks
-def iterate():
+async def iterate():
+  #await asyncio.sleep(45)
   print("-----------------------------------------------------")
   mycursor.execute("SELECT * FROM userlog")
   rows = mycursor.fetchall()
@@ -54,7 +55,7 @@ def iterate():
     # row[1] = task
     # row[2] = time
     print(row[0] ,"this ", row[1],"this", row[2])
-    action = time_process1(row[2], datetime.utcnow())
+    action = await time_process1(row[2], datetime.utcnow())
     if(action == 0):
       pass
       #print("nothing new")
@@ -71,12 +72,14 @@ def iterate():
       user.send("hi cutie")
       #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
+    
     # print("script ran but nothing happened. what the shit yo. action = " + str(action))
 
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
   guilds = client.guilds
+  #await prenk()
   await prenk()
 
 # ping thing
