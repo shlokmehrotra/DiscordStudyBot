@@ -69,7 +69,7 @@ async def iterate():
     else:
       #PM the USER with the deadline update
       user = client.get_user(int(row[0]))
-      user.send("hi cutie")
+      await user.send("Hi, Please keep in mind you have **" + str(action) + " minutes** to complete your task: **" + row[1] + "**")
       #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
     
