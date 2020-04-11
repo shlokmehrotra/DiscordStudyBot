@@ -163,7 +163,7 @@ async def show(ctx):
         colour = discord.Colour.blue()
     )
     for row in rows:
-        embed.add_field(name=f"{row[0]}", value=f"{row[1]}", inline=False)
+        embed.add_field(name=f"**{row[0]}**", value=f"*{row[1]}*", inline=False)
 
     embed.set_footer(text="Study Bot®")
     await ctx.send(embed=embed)
