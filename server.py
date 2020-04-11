@@ -202,6 +202,7 @@ async def show(ctx):
       rv += str(hours) + "hours "
     if(minutes != 0):
       rv += str(minutes) + "minutes "
+    row = (row[0], rv)
     #here you need to replace the row time entry with RV.
     print(days, hours, minutes)
   print("New Rows: ", rows)
