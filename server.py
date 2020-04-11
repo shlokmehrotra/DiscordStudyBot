@@ -159,14 +159,14 @@ async def show(ctx):
   else:
     await ctx.send(userMention)
     embed = discord.Embed(
-        title = "Here are your tasks.",
-        description = "Stay productive! :notepad_spiral:",
+        title = "Here are your tasks. :notepad_spiral:",
         colour = discord.Colour.blue()
     )
-    embed.set_footer(text="Study Bot®")
-    embed.set_author(name="Study Bot")
     for row in rows:
         embed.add_field(name=f"{row[0]}", value=f"{row[1]}", inline=False)
+
+    embed.set_footer(text="Study Bot®")
+    embed.set_timestamp()
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
