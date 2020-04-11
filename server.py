@@ -169,7 +169,7 @@ async def show(ctx):
     for row in rows:
         embed.add_field(name=f"**{row[0]}**", value=f"{row[1]}", inline=False)
 
-    embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
+    # embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
     embed.set_footer(text="Study Bot®")
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
