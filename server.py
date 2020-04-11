@@ -170,7 +170,7 @@ async def update(ctx, *, arg):
     await ctx.send(f"You have updated **{str(task)}**.")
 
 # show items specific to user
-def timeDifferential(time_curr, time_lat):
+async def timeDifferential(time_curr, time_lat):
   time_lat = time_lat.split('.')[0]
   time_lat = datetime.strptime(time_lat, '%Y-%m-%d %H:%M:%S')
   t_diff = time_lat - time_curr
@@ -180,7 +180,7 @@ def timeDifferential(time_curr, time_lat):
   minutes = minutes -  days * 1440
   hours = int(minutes / 60)
   minutes = minutes - hours * 60
-  return(days, hours, minutes)
+  return(-1*days, -1*hours, -1*minutes)
 
 @client.command()
 async def show(ctx):
@@ -191,11 +191,19 @@ async def show(ctx):
   print(ctx.author.id)
   mycursor.execute(comm % (data))
   userMention = ctx.author.mention
-  rows = mycursor.fetchall()
-  #rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
+  rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
   print("Rows: ", rows)
   for row in rows:
-    row = (row[0], row[1], timeDifferential(datetime.utcnow(), row[2]))
+    days, hours, minutes = await timeDifferential(datetime.utcnow(), row[1])
+    rv = ""
+    if(days != 0):
+      rv += str(days) + "days "
+    if(hours != 0):
+      rv += str(hours) + "hours "
+    if(minutes != 0):
+      rv += str(minutes) + "minutes "
+    #here you need to replace the row time entry with RV.
+    print(days, hours, minutes)
   print("New Rows: ", rows)
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
