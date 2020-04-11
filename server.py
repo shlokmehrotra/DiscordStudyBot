@@ -60,7 +60,9 @@ def iterate():
       print("DELETED item")
     else:
       #PM the USER with the deadline update
-      client.get_user(str(row[0])).send("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
+      user = client.get_user(int(row[0]))
+      user.send("hi cutie")
+      #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
     #print("script ran but nothing happened. what the shit yo. action = " + str(action))
 @client.event
@@ -166,8 +168,10 @@ async def complete(ctx, task):
 
 
 #dont touch the below tings
-while(True):
-  iterate()
-  time.sleep(20)
+async def prenk():
+  while(True):
+    iterate()
+    asyncio.sleep(20)
+prenk()
 #schedule.every(0.1).minutes.do(iterate)
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
