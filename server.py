@@ -131,11 +131,18 @@ async def add(ctx, task, time):
 async def delete(ctx, task):
   data = (str(ctx.author.id), str(task))
   comm = (
-  "DELETE FROM userlog WHERE user = %s  AND item = %s"
+    "SELECT * FROM userlog where user = %s AND item = %s"
   )
-
   mycursor.execute(comm, data)
-  await ctx.send(f"Deleted task: **{task}**.")
+  rows = mycursor.fetchall()
+  if(len(rows) == 0):
+    await ctx.send("Your task **" + str(task) + "** does not exist!")
+  else:
+    comm = (
+    "DELETE FROM userlog WHERE user = %s  AND item = %s"
+    )
+    mycursor.execute(comm, data)
+    await ctx.send(f"Deleted task: **{task}**.")
 
 # update items
 @client.command()
@@ -197,11 +204,19 @@ async def show(ctx):
 async def complete(ctx, task):
   data = (str(ctx.author.id), str(task))
   comm = (
-  "DELETE FROM userlog WHERE user = %s  AND item = %s"
+    "SELECT * FROM userlog where user = %s AND item = %s"
   )
-
   mycursor.execute(comm, data)
-  await ctx.send(f"Congrats you completed **{task}** successfully")
+  rows = mycursor.fetchall()
+  if(len(rows) == 0):
+    await ctx.send("Your task **" + str(task) + "** does not exist!")
+  else:
+    comm = (
+    "DELETE FROM userlog WHERE user = %s  AND item = %s"
+    )
+
+    mycursor.execute(comm, data)
+    await ctx.send(f"Congrats you completed **{task}** successfully")
 
 
 #dont touch the below tings
