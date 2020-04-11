@@ -163,7 +163,7 @@ async def show(ctx):
         colour = discord.Colour.blue()
     )
 
-    embed.set_author("Swapnil", icon_url="https://i.imgur.com/rdm3W9t.png")
+    embed.set_author(name="Swapnil", icon_url="https://i.imgur.com/rdm3W9t.png")
 
     for row in rows:
         embed.add_field(name=f"**{row[0]}**", value=f"{row[1]}", inline=False)
