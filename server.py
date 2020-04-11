@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from dateutil.relativedelta import relativedelta
 import time
 import schedule
+import asyncio
 
 mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
 
@@ -14,6 +15,11 @@ mycursor = mydb.cursor()
 mycursor.execute("select * from userlog")
 for prenk in mycursor:
   print(prenk)
+
+async def prenk():
+  while(True):
+    iterate()
+    asyncio.sleep(20)
 
 client = commands.Bot(command_prefix = "!")
 
@@ -71,6 +77,7 @@ def iterate():
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
   guilds = client.guilds
+  await prenk()
 
 # ping thing
 @client.command()
@@ -188,11 +195,8 @@ async def complete(ctx, task):
 
 
 #dont touch the below tings
-async def prenk():
-  while(True):
-    iterate()
-    asyncio.sleep(20)
-prenk()
+
+#prenk()
 
 #schedule.every(0.1).minutes.do(iterate)
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
