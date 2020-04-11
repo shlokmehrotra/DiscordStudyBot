@@ -1,7 +1,5 @@
 import mysql.connector 
 import discord
-import numpy as np
-import pandas as pd
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 import time 
@@ -13,6 +11,7 @@ mydb = mysql.connector.connect(host = "localhost", user = "root", password = "br
 mydb.autocommit = True
 mycursor = mydb.cursor()
 
+client = commands.Bot(command_prefix = "!")
 
 def time_process(time_curr, time_lat):
 
@@ -55,4 +54,8 @@ def iterate()
   			mycursor.execute(comm, data)
  		else:
  			#PM the USER with the deadline update
+ 			client.get_user(str(row[0])).send("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
 schedule.every(1).minutes.do(iterate)
+
+
+client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
