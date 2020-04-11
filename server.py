@@ -144,7 +144,7 @@ async def delete(ctx, *, task):
     "DELETE FROM userlog WHERE user = %s  AND item = %s"
     )
     mycursor.execute(comm, data)
-    await ctx.send(f"Deleted task: **{task}**.")
+    await ctx.send(f"Deleted **{task}**.")
 
 # update items
 @client.command()
