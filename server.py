@@ -160,6 +160,7 @@ async def show(ctx):
     await ctx.send(userMention)
     embed = discord.Embed(
         title = "Here are your tasks. :notepad_spiral:",
+        timestamp = datetime.datetime.now();
         colour = discord.Colour.blue()
     )
 
@@ -169,7 +170,7 @@ async def show(ctx):
         embed.add_field(name=f"**{row[0]}**", value=f"{row[1]}", inline=False)
 
     embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
-    embed.set_footer(text="Study Bot®", ts=True)
+    embed.set_footer(text="Study Bot®")
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
