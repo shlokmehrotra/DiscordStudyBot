@@ -193,18 +193,23 @@ async def show(ctx):
   userMention = ctx.author.mention
   rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
   print("Rows: ", rows)
+  row_new = []
   for row in rows:
     days, hours, minutes = await timeDifferential(datetime.utcnow(), row[1])
     rv = ""
     if(days != 0):
-      rv += str(days) + "days "
+      rv += str(days) + " days "
     if(hours != 0):
-      rv += str(hours) + "hours "
+      rv += str(hours) + " hrs "
     if(minutes != 0):
-      rv += str(minutes) + "minutes "
+      rv += str(minutes) + " mins "
+    row_new.append((row[0], rv))
     row = (row[0], rv)
+    print(rv)
+    print(row)
     #here you need to replace the row time entry with RV.
     print(days, hours, minutes)
+  rows = row_new
   print("New Rows: ", rows)
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
