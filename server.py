@@ -20,7 +20,8 @@ async def prenk():
     await iterate()
     await asyncio.sleep(60)
 
-client = commands.Bot(command_prefix = "!")
+client = commands.Bot(command_prefix = "$")
+client.remove_command("help")
 
 async def time_process1(time_curr, time_lat):
 
@@ -102,7 +103,7 @@ def time_process(time_from_now):
     days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
   return(datetime.utcnow() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
 
-@commands.command()
+@client.command()
 async def help(ctx):
     embed = discord.Embed(
         title = "Help",
