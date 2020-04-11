@@ -57,6 +57,20 @@ def iterate():
  			client.get_user(str(row[0])).send("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
 #schedule.every(1).minutes.do(iterate)
 '''
+
+
+def timeDifferential(time_curr, time_lat):
+  time_lat = time_lat.split('.')[0]
+  time_lat = datetime.strptime(time_lat, '%Y-%m-%d %H:%M:%S')
+  t_diff = time_lat - time_curr
+  seconds = -1 * (t_diff.seconds + t_diff.days * 86400)
+  minutes = int(seconds / 60)
+  days = int(minutes / 1440)
+  minutes = minutes -  days * 1440
+  hours = int(minutes / 60)
+  minutes = minutes - hours * 60
+  return(days, hours, minutes)
+
 user = client.get_user(430610739389267968)
 user.send("hi")
 

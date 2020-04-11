@@ -171,6 +171,18 @@ async def update(ctx, *, arg):
     await ctx.send(f"You have updated **{str(task)}**.")
 
 # show items specific to user
+def timeDifferential(time_curr, time_lat):
+  time_lat = time_lat.split('.')[0]
+  time_lat = datetime.strptime(time_lat, '%Y-%m-%d %H:%M:%S')
+  t_diff = time_lat - time_curr
+  seconds = -1 * (t_diff.seconds + t_diff.days * 86400)
+  minutes = int(seconds / 60)
+  days = int(minutes / 1440)
+  minutes = minutes -  days * 1440
+  hours = int(minutes / 60)
+  minutes = minutes - hours * 60
+  return(days, hours, minutes)
+
 @client.command()
 async def show(ctx):
   comm = (
@@ -180,8 +192,11 @@ async def show(ctx):
   print(ctx.author.id)
   mycursor.execute(comm % (data))
   userMention = ctx.author.mention
-  rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
-  print(rows)
+  rows = mycursor.fetchall()
+  #rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
+  print("Rows: ", rows)
+  #for row in rows:
+  #  row = timeDifferential(datetime.utcnow(), row[1])
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
   else:
@@ -192,7 +207,7 @@ async def show(ctx):
         colour = discord.Colour.blue()
     )
 
-    embed.set_author(name="Swapnil", icon_url="https://i.imgur.com/rdm3W9t.png")
+    embed.set_author(name="Study Bot", icon_url="https://i.imgur.com/rdm3W9t.png")
 
     for row in rows:
         embed.add_field(name=f"{row[1]}", value=f"**{row[0]}**", inline=False)
@@ -221,7 +236,6 @@ async def complete(ctx, *, task):
 
     mycursor.execute(comm, data)
     await ctx.send(f"Congrats you completed **{task}** successfully :partying_face:")
-
 
 #dont touch the below tings
 
