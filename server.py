@@ -106,18 +106,25 @@ def time_process(time_from_now):
 async def add(ctx, task, time):
   print(ctx.author.id)
   print(task, time)
-
-  # process the time to calculate end date
-  time = time_process(time)
-  # adding item to database
-  comm = (
-  "INSERT INTO userlog (user, item, endtime) VALUES (%s, %s, %s)"
-  )
-  data = (str(ctx.author.id), str(task), str(time))
+  comm = ("SELECT * FROM userlog WHERE item = %s AND user = %s")
+  data = (str(task), str(ctx.author.id))
   mycursor.execute(comm, data)
-  mycursor.execute("SELECT * FROM userlog")
   rows = mycursor.fetchall()
-  print(rows)
+  if(len(rows) == 0):
+    # process the time to calculate end date
+    time = time_process(time)
+    # adding item to database
+    comm = (
+    "INSERT INTO userlog (user, item, endtime) VALUES (%s, %s, %s)"
+    )
+    data = (str(ctx.author.id), str(task), str(time))
+    mycursor.execute(comm, data)
+    mycursor.execute("SELECT * FROM userlog")
+    rows = mycursor.fetchall()
+    print(rows)
+    await ctx.send("You have added the task: **" + str(task) + "** successfully!")
+  else:
+    await ctx.send("You already have a task by that name pending. If you would like to override this task please update it using the update command.")
 
 # delete items from schedule
 @client.command()
