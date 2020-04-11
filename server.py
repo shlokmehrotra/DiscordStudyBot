@@ -162,10 +162,14 @@ async def show(ctx):
         title = "Here are your tasks. :notepad_spiral:",
         colour = discord.Colour.blue()
     )
-    for row in rows:
-        embed.add_field(name="", value=f"**{row[0]}**\n{row[1]}", inline=False)
 
-    embed.set_footer(text="Study Bot®")
+    embed.set_author("Swapnil", icon="https://i.imgur.com/rdm3W9t.png")
+
+    for row in rows:
+        embed.add_field(name=f"**{row[0]}**", value=f"{row[1]}", inline=False)
+
+    embed.set_thumbnail("https://i.imgur.com/rdm3W9t.png")
+    embed.set_footer(text="Study Bot®", ts=True)
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
