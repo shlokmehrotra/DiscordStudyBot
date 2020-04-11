@@ -103,8 +103,10 @@ def time_process(time_from_now):
 
 # add items to schedule
 @client.command()
-async def add(ctx, task, time):
+async def add(ctx, *, arg):
   print(ctx.author.id)
+  task = " ".join(arg.split()[:-1])
+  time = arg.split()[-1]
   print(task, time)
   comm = ("SELECT * FROM userlog WHERE item = %s AND user = %s")
   data = (str(task), str(ctx.author.id))
@@ -164,7 +166,7 @@ async def update(ctx, task, new_time):
     new_time = time_process(new_time)
     data = (new_time, task, ctx.author.id)
     mycursor.execute(comm, data)
-    await ctx.send(f"You have updated you task: **{str(task)}**")
+    await ctx.send(f"You have updated **{str(task)}**.")
 
 # show items specific to user
 @client.command()
@@ -194,7 +196,7 @@ async def show(ctx):
         embed.add_field(name=f"{row[1]}", value=f"**{row[0]}**", inline=False)
 
     # embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
-    embed.set_footer(text="Study Bot®")
+    embed.set_footer(text="Study Bot®", icon_url="https://i.imgur.com/rdm3W9t.png")
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
