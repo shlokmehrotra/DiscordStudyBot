@@ -23,7 +23,7 @@ def time_process1(time_curr, time_lat):
   time_curr = datetime.strptime(time_curr, '%Y-%m-%d %H:%M:%S')
   t_diff = time_lat - time_curr
 
-  #in minutes
+  # in minutes
   time_intervals = [1, 5, 10, 30, 60, 180, 300, 1440, 2880, 4320, 10080]
   print(t_diff)
   if(t_diff.days < 0):
@@ -31,21 +31,22 @@ def time_process1(time_curr, time_lat):
     print("current time interval thing: ", seconds/60)
     for value in time_intervals:
       if(int(seconds/60) == value):
-        #time that needs to be sent :)
+        # time that needs to be sent :)
         return value
-    #time has not come up
+    # time has not come up
     return 0
-  #the item should be deleted ting
+  # the item should be deleted ting
   return -1
 
+# look for the prenks
 def iterate():
   print("-----------------------------------------------------")
   mycursor.execute("SELECT * FROM userlog")
   rows = mycursor.fetchall()
   for row in rows:
-    #row[0] = user id
-    #row[1] = task
-    #row[2] = time
+    # row[0] = user id
+    # row[1] = task
+    # row[2] = time
     print(row[0] ,"this ", row[1],"this", row[2])
     action = time_process1(row[2], datetime.utcnow())
     if(action == 0):
@@ -64,7 +65,7 @@ def iterate():
       user.send("hi cutie")
       #client.get_user(int(row[0])).dm_channel("Hey, you have " + str(action) + " minutes left to complete you task. Stay on schedule!")
       print("PM complete")
-    #print("script ran but nothing happened. what the shit yo. action = " + str(action))
+    # print("script ran but nothing happened. what the shit yo. action = " + str(action))
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
@@ -94,9 +95,9 @@ async def add(ctx, task, time):
   print(ctx.author.id)
   print(task, time)
 
-  #process the time to calculate end date
+  # process the time to calculate end date
   time = time_process(time)
-  #adding item to database
+  # adding item to database
   comm = (
   "INSERT INTO userlog (user, item, endtime) VALUES (%s, %s, %s)"
   )
@@ -148,11 +149,13 @@ async def show(ctx):
   data = (ctx.author.id)
   print(ctx.author.id)
   mycursor.execute(comm % (data))
-  rows = mycursor.fetchall()
+  userMention = ctx.mention
+  rows = [row[1:] for row in mycursor.fetchall()]
   print(rows)
   if(len(rows) == 0):
-    await ctx.send("Currently, you have no items. Please add items to view your current itemlist")
+    await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
   else:
+    await ctx.send(userMention)
     await ctx.send("\n".join([str(row) for row in rows]))
 
 # indicate that item is completed
@@ -173,5 +176,6 @@ async def prenk():
     iterate()
     asyncio.sleep(20)
 prenk()
+
 #schedule.every(0.1).minutes.do(iterate)
 client.run("Njg5NzcwODc3OTk0NTMyODg0.XnHtRA.woz3RKnzeaztW2dTrhpbLekA68g")
