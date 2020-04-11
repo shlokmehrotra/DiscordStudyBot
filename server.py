@@ -19,7 +19,7 @@ for prenk in mycursor:
 async def prenk():
   while(True):
     await iterate()
-    await asyncio.sleep(45)
+    await asyncio.sleep(60)
 
 client = commands.Bot(command_prefix = "!")
 
