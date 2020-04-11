@@ -157,16 +157,16 @@ async def show(ctx):
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
   else:
+    await ctx.send(userMention)
     embed = discord.Embed(
-        title = f"{userMention}: Here are your tasks!",
-        description = ":notepad_spiral:",
+        title = "Here are your tasks.",
+        description = "Stay productive! :notepad_spiral:",
         colour = discord.Colour.blue()
     )
-    embed.set_footer(text=":pray_tone4: sweppu.")
+    embed.set_footer(text="Study Bot®")
     embed.set_author(name="Study Bot")
     for row in rows:
         embed.add_field(name=f"{row[0]}", value=f"{row[1]}", inline=False)
-
     await ctx.send(embed=embed)
     # await ctx.send(userMention)
     # await ctx.send("\n".join([str(row) for row in rows]))
