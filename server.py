@@ -102,7 +102,7 @@ def time_process(time_from_now):
     days, hours, minutes = time_from_now[0], time_from_now[1], time_from_now[2]
   return(datetime.utcnow() + timedelta(days = int(days), hours=int(hours), minutes = int(minutes)))
 
-@client.command()
+@commands.command()
 async def help(ctx):
     embed = discord.Embed(
         title = "Help",
