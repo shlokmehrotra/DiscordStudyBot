@@ -169,7 +169,7 @@ async def show(ctx):
   print(ctx.author.id)
   mycursor.execute(comm % (data))
   userMention = ctx.author.mention
-  rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]), '%Y-%m-%d %H:%M:%S'))
+  rows = sorted([row[1:] for row in mycursor.fetchall()], key=lambda x: datetime.strptime(str(x[1]).split(".")[0], '%Y-%m-%d %H:%M:%S'))
   print(rows)
   if(len(rows) == 0):
     await ctx.send(f"{userMention} currently, you have no tasks. Please add items to view your current task list.")
