@@ -65,7 +65,7 @@ async def iterate():
       "DELETE FROM userlog WHERE user = %s  AND item = %s"
       )
       user = client.get_user(int(row[0]))
-      await user.send(f"You should have completed your task:  **{str(row[1])} minutes** by now.")
+      await user.send(f"You should have completed your task:  **{str(row[1])}** by now.")
       mycursor.execute(comm, data)
       print("DELETED item")
     else:
