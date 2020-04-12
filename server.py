@@ -5,7 +5,15 @@ from datetime import datetime, timedelta, timezone
 import time
 import asyncio
 
-mydb = mysql.connector.connect(host = "localhost", user = "root", password = "bruhprenk", database = "toughguy")
+# loading credentials
+with open("config.txt", "r") as f:
+    credentials = []
+    for line in f:
+        credentials.append(line.strip())
+
+# connecting to database
+mydb = mysql.connector.connect(host=f"{credentials[0]}", user=f"{credentials[1]}",
+password=f"{credentials[2]}", database=f"{credentials[3]}")
 
 mydb.autocommit = True
 mycursor = mydb.cursor()
