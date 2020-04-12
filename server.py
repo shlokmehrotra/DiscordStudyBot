@@ -2,7 +2,6 @@ import mysql.connector
 import discord
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
-from dateutil.relativedelta import relativedelta
 import time
 import asyncio
 
