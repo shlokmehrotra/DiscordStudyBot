@@ -285,4 +285,4 @@ async def complete(ctx, *, task):
 #dont touch the below tings
 
 
-client.run("Njg5NzcwODc3OTk0NTMyODg0.XpK5Og.Sm3ZYHz2mzAg7bDyrFdCGkf-ss0")
+client.run("TOKEN HERE")
