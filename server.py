@@ -4,6 +4,11 @@ from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 import time
 import asyncio
+import csv
+
+#############
+# STUDY BOT #
+#############
 
 # loading credentials
 with open("config.txt", "r") as f:
@@ -84,6 +89,7 @@ async def iterate():
 
     # print("script ran but nothing happened. what the shit yo. action = " + str(action))
 
+# entering
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
@@ -155,6 +161,18 @@ async def add(ctx, *, arg):
     rows = mycursor.fetchall()
     print(rows)
     await ctx.send(f"You have added **{str(task)}** successfully!")
+    with open('tasks.csv') as csv_file:
+      csv_reader = csv.reader(csv_file, delimiter = ",")
+      #print("NUMBER OF TASKS: " + str(csv_reader))
+      data = ""
+      for row in csv_reader:
+        for j in row:
+          data += j
+    data = int(data) + 1
+    print("NUMBER OF TASKS: " + str(data))
+    with open('tasks.csv', mode='w') as csv_file:
+      csv_write = csv.writer(csv_file)
+      csv_write.writerow(str(data))
   else:
     await ctx.send("You already have a task by that name pending. If you would like to override this task please update it using the update command.")
 
@@ -200,7 +218,7 @@ async def update(ctx, *, arg):
     mycursor.execute(comm, data)
     await ctx.send(f"You have updated **{str(task)}**.")
 
-# show items specific to user
+# calc diffs
 async def timeDifferential(time_curr, time_lat):
   time_lat = time_lat.split('.')[0]
   time_lat = datetime.strptime(time_lat, '%Y-%m-%d %H:%M:%S')
@@ -213,6 +231,7 @@ async def timeDifferential(time_curr, time_lat):
   minutes = minutes - hours * 60
   return(-1*days, -1*hours, -1*minutes)
 
+# show user tasks
 @client.command()
 async def show(ctx):
   comm = (
@@ -278,11 +297,32 @@ async def complete(ctx, *, task):
     comm = (
     "DELETE FROM userlog WHERE user = %s  AND item = %s"
     )
-
     mycursor.execute(comm, data)
     await ctx.send(f"Congrats you completed **{task}** successfully :partying_face:")
 
+# info for users
+@client.command()
+async def info(ctx):
+  embed = discord.Embed(
+    title = "Info",
+    description = "Statistics for Study Bot",
+    timestamp = datetime.utcnow(),
+    colour = discord.Colour.blue()
+  )
+  with open('tasks.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter = ",")
+    #print("NUMBER OF TASKS: " + str(csv_reader))
+    data = ""
+    for row in csv_reader:
+      for j in row:
+        data += j
+
+  embed.set_author(name="Study Bot", icon_url="https://i.imgur.com/rdm3W9t.png")
+  embed.add_field(name=f"Total Tasks Created", value=f"{data}", inline=False)
+
+  # embed.set_thumbnail(url="https://i.imgur.com/rdm3W9t.png")
+  embed.set_footer(text="Study Bot®", icon_url="https://i.imgur.com/rdm3W9t.png")
+  await ctx.send(embed=embed)
+
 #dont touch the below tings
-
-
-client.run("TOKEN HERE")
+client.run(f"{credentials[4]}")
